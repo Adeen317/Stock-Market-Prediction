@@ -141,3 +141,21 @@ for ui,(dat,lbl) in enumerate(zip(u_data,u_labels)):
     lbl_ind = lbl
     print('\tInputs: ',dat )
     print('\n\tOutput:',lbl)
+
+
+D = 1 # Dimensionality of the data. Since your data is 1-D this would be 1
+num_unrollings = 50 # Number of time steps you look into the future.
+batch_size = 500 # Number of samples in a batch
+num_nodes = [200,200,150] # Number of hidden nodes in each layer of the deep LSTM stack we're using
+n_layers = len(num_nodes) # number of layers
+dropout = 0.2 # dropout amount
+
+tf.compat.v1.reset_default_graph()
+
+# Input data.
+train_inputs, train_outputs = [],[]
+
+# You unroll the input over time defining placeholders for each time step
+for ui in range(num_unrollings):
+    train_inputs.append(tf.placeholder(tf.float32, shape=[batch_size,D],name='train_inputs_%d'%ui))
+    train_outputs.append(tf.placeholder(tf.float32, shape=[batch_size,1], name = 'train_outputs_%d'%ui))
